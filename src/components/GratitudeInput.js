@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { Space, Input } from 'antd';
 
-import GratitudeItem from './GratitudeItem';
-
-function GratitudeInput () {
-  const [enteredLines, addNewLine] = useState('');
-
-  function itemSubmissionHandler (event) {
-    addNewLine(event.target.value);
-  }
+function GratitudeInput(props) {
+    const handleInputKeyUp = (event) => {
+      // event.preventDefault();
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        props.onInput(event.target.value);
+        console.log('enter')
+      }
+    }
 
     return (
-    <GratitudeItem onItemSubmission={itemSubmissionHandler}/>
+      <div>
+        <div>
+          {props.entries.map(entry => {
+            return (
+            <div>
+              {entry}
+            </div> )
+          })}
+        </div>
+
+        <Space.Compact style={{ color: "black" }}>
+          <Input style={{ width: "500px"}} addonBefore="I am grateful for..." onKeyDown={handleInputKeyUp} />
+        </Space.Compact>
+      </div>
     )
-};
+}
 
 export default GratitudeInput;
