@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import GratitudeEntry from "./GratitudeEntry";
 
+
 function GratitudeInput(props) {
 
   const [inputValue, updateInputValue] = useState('');
@@ -20,7 +21,7 @@ function GratitudeInput(props) {
   return (
     <div>
       <div>
-      <GratitudeEntry />
+      <GratitudeEntry entries={props.entries} />
       </div>
 
       <Box marginLeft="500px" marginRight="500px">
