@@ -1,9 +1,9 @@
-import GratitudeForm from "../components/GratitudeForm";
+import GratitudePage from "../components/GratitudePage";
 
-function GratitudePage() {
+function Gratitude() {
     return (
-        <GratitudeForm />
+        <GratitudePage />
     )
 };
 
-export default GratitudePage;
+export default Gratitude;
