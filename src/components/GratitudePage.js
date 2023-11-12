@@ -33,7 +33,25 @@ function GratitudePage() {
     }
   };
 
-  const formSubmitHandler = (event) => {};
+  async function formSubmitHandler(event) {
+    event.preventDefault();
+    const response = await fetch('https://eudaimonia-b4b7d-default-rtdb.firebaseio.com/gratitudeentries.json', {
+    method: 'POST',
+    body: JSON.stringify(gratitudeEntries), 
+    headers: {
+      'Content-Type': 'application/json'
+    }
+   });
+   const data = await response.json();
+   console.log(data);
+    // event.preventDefault(); 
+    // // ^remove this after adding BE?
+    // const entryData = {
+    //   entry: gratitudeEntries,
+    // };
+    // console.log(entryData);
+
+  };
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -45,7 +63,7 @@ function GratitudePage() {
   }));
 
   return (
-    <form>
+    <form onSubmit={formSubmitHandler}>
       <ol>
         <div>
           <Box marginTop="200px">
@@ -85,6 +103,8 @@ function GratitudePage() {
                       }}
                       value={inputValue}
                       fullWidth
+                      autoComplete="off"
+                      textColor="white"
                     ></TextField>
                   </div>
                 ) : null}
@@ -96,7 +116,7 @@ function GratitudePage() {
 
       {readyToSubmit ? (
         <Box textAlign="center">
-          <button onClick={formSubmitHandler}>
+          <button>
             Submit
           </button>
         </Box>
