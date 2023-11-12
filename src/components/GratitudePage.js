@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
@@ -8,21 +8,9 @@ import { TextField } from "@mui/material";
 
 function GratitudePage() {
   const [gratitudeEntries, updateGratitudeEntries] = useState([]);
-  const [entriesActive, setEntriesActive] = useState(false);
   const [inputValue, updateInputValue] = useState("");
-  const [readyToSubmit, setReadytoSubmit] = useState(false);
 
-  useEffect(() => {
-    if (gratitudeEntries.length === 10) {
-      setReadytoSubmit(true);
-    }
-  }, [gratitudeEntries.length]);
 
-  useEffect(() => {
-    if (gratitudeEntries.length > 0) {
-      setEntriesActive(true);
-    }
-  }, [gratitudeEntries.length]);
 
   const handleEntryInput = (event) => {
     if (event.key === "Enter") {
@@ -33,7 +21,7 @@ function GratitudePage() {
     }
   };
 
-  async function formSubmitHandler(event) {
+ async function formSubmitHandler(event) {
     event.preventDefault();
     const response = await fetch('https://eudaimonia-b4b7d-default-rtdb.firebaseio.com/gratitudeentries.json', {
     method: 'POST',
@@ -44,13 +32,8 @@ function GratitudePage() {
    });
    const data = await response.json();
    console.log(data);
-    // event.preventDefault(); 
-    // // ^remove this after adding BE?
-    // const entryData = {
-    //   entry: gratitudeEntries,
-    // };
-    // console.log(entryData);
-
+   updateGratitudeEntries([]);
+   updateInputValue("");
   };
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -62,6 +45,8 @@ function GratitudePage() {
     alignContent: "center",
   }));
 
+  const readyToSubmit = gratitudeEntries.length === 10;
+
   return (
     <form onSubmit={formSubmitHandler}>
       <ol>
@@ -69,7 +54,7 @@ function GratitudePage() {
           <Box marginTop="200px">
             <div>
               <div>
-                {entriesActive ? (
+                {gratitudeEntries.length ? (
                   <Box>
                     <Stack
                       borderTop={3}
@@ -104,7 +89,6 @@ function GratitudePage() {
                       value={inputValue}
                       fullWidth
                       autoComplete="off"
-                      textColor="white"
                     ></TextField>
                   </div>
                 ) : null}
