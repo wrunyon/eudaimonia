@@ -9,32 +9,46 @@ import { TextField } from "@mui/material";
 function GratitudePage() {
   const [gratitudeEntries, updateGratitudeEntries] = useState([]);
   const [inputValue, updateInputValue] = useState("");
+  const [showValidationError, setShowValidationError] = useState(false);
 
-
+  const inputIsValid = inputValue.length > 0;
 
   const handleEntryInput = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
+    if (inputIsValid) {
+      setShowValidationError(false);
+    }
+
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+
+    if (inputIsValid) {
       updateInputValue("");
       console.log(inputValue);
+      console.log(inputValue.length);
+      console.log(inputIsValid);
       updateGratitudeEntries([...gratitudeEntries, inputValue]);
+    } else {
+      setShowValidationError(true);
     }
   };
 
- async function formSubmitHandler(event) {
+  async function formSubmitHandler(event) {
     event.preventDefault();
-    const response = await fetch('https://eudaimonia-b4b7d-default-rtdb.firebaseio.com/gratitudeentries.json', {
-    method: 'POST',
-    body: JSON.stringify(gratitudeEntries), 
-    headers: {
-      'Content-Type': 'application/json'
-    }
-   });
-   const data = await response.json();
-   console.log(data);
-   updateGratitudeEntries([]);
-   updateInputValue("");
-  };
+    const response = await fetch(
+      "https://eudaimonia-b4b7d-default-rtdb.firebaseio.com/gratitudeentries.json",
+      {
+        method: "POST",
+        body: JSON.stringify(gratitudeEntries),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    updateGratitudeEntries([]);
+    updateInputValue("");
+  }
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -79,8 +93,17 @@ function GratitudePage() {
                 {!readyToSubmit ? (
                   <div>
                     <TextField
+                      error={showValidationError}
+                      id="filled-error-helper-text"
+                      helperText={showValidationError && "Please enter a valid value."}
+                      variant="filled"
                       label="I am grateful for..."
                       size="medium"
+                      sx={{
+                        input: {
+                          color: "white",
+                        }
+                      }}
                       color="warning"
                       onKeyDown={handleEntryInput}
                       onChange={(event) => {
@@ -100,9 +123,7 @@ function GratitudePage() {
 
       {readyToSubmit ? (
         <Box textAlign="center">
-          <button>
-            Submit
-          </button>
+          <button>Submit</button>
         </Box>
       ) : null}
     </form>
