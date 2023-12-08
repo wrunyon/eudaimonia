@@ -5,13 +5,20 @@ import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
 
 function GratitudePage() {
   const [gratitudeEntries, updateGratitudeEntries] = useState([]);
   const [inputValue, updateInputValue] = useState("");
   const [showValidationError, setShowValidationError] = useState(false);
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
 
   const inputIsValid = inputValue.length > 0;
+
+  const handleClose = () => {
+
+    setSuccessSnackbarOpen(false);
+  };
 
   const handleEntryInput = (event) => {
     if (inputIsValid) {
@@ -48,6 +55,7 @@ function GratitudePage() {
     console.log(data);
     updateGratitudeEntries([]);
     updateInputValue("");
+    setSuccessSnackbarOpen(true);
   }
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -95,14 +103,16 @@ function GratitudePage() {
                     <TextField
                       error={showValidationError}
                       id="filled-error-helper-text"
-                      helperText={showValidationError && "Please enter a valid value."}
+                      helperText={
+                        showValidationError && "Please enter a valid value."
+                      }
                       variant="filled"
                       label="I am grateful for..."
                       size="medium"
                       sx={{
                         input: {
                           color: "white",
-                        }
+                        },
                       }}
                       color="warning"
                       onKeyDown={handleEntryInput}
@@ -118,12 +128,20 @@ function GratitudePage() {
               </Box>
             </div>
           </Box>
+          <div>
+            <Snackbar
+              open={successSnackbarOpen}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              message="Thank you for your practice 🌞"
+            ></Snackbar>
+          </div>
         </div>
       </ol>
 
       {readyToSubmit ? (
         <Box textAlign="center">
-          <button>Submit</button>
+          <button>Log entry</button>
         </Box>
       ) : null}
     </form>
