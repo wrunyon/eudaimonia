@@ -6,6 +6,9 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import SportsMartialArtsIcon from "@mui/icons-material/SportsMartialArts";
 
 function GratitudePage() {
   const [gratitudeEntries, updateGratitudeEntries] = useState([]);
@@ -16,7 +19,6 @@ function GratitudePage() {
   const inputIsValid = inputValue.length > 0;
 
   const handleClose = () => {
-
     setSuccessSnackbarOpen(false);
   };
 
@@ -70,7 +72,7 @@ function GratitudePage() {
   const readyToSubmit = gratitudeEntries.length === 10;
 
   return (
-    <form onSubmit={formSubmitHandler}>
+    <form>
       <ol>
         <div>
           <Box marginTop="200px">
@@ -134,14 +136,34 @@ function GratitudePage() {
               autoHideDuration={6000}
               onClose={handleClose}
               message="Thank you for your practice 🌞"
-            ></Snackbar>
+            >
+              <MuiAlert
+                onClose={handleClose}
+                severity="success"
+                sx={{ width: "100%" }}
+                variant="filled"
+              >
+                Thank you for your practice 🌞
+              </MuiAlert>
+            </Snackbar>
           </div>
         </div>
       </ol>
 
       {readyToSubmit ? (
         <Box textAlign="center">
-          <button>Log entry</button>
+          <Button
+            onClick={formSubmitHandler}
+            variant="outlined"
+            endIcon={<SportsMartialArtsIcon />}
+            sx={{
+              color: "white",
+              borderColor: "white", 
+              "&:hover": {borderColor: "orange"}
+            }}
+          >
+            Log entry
+          </Button>
         </Box>
       ) : null}
     </form>
