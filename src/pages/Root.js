@@ -1,10 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 
 import ButtonAppBar from "../components/AppBar";
 
 function RootLayout() {
   return (
     <>
+      <ScrollRestoration />
       <ButtonAppBar />
       <Outlet />
     </>
